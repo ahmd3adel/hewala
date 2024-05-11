@@ -1,7 +1,11 @@
 <?php
 
+use App\Http\Controllers\ExportController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,10 +17,12 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
+Route::resource('exports' , ExportController::class);
+Route::resource('permissions' , PermissionController::class);
+Route::resource('users' , UserController::class);
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('admin.index');
+})->name('home');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -27,5 +33,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::get('/supported-currencies', [HomeController::class , 'supportedCurrencies']);
+
 
 require __DIR__.'/auth.php';
